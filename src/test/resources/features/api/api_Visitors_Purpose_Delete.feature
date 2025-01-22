@@ -20,7 +20,7 @@ Feature: As an administrator I should be able to delete the visitor puspose reco
 
     Examples:
       | id   |
-      | 1267 |
+      | 1277 |
 
 
   Scenario: Verify that a DELETE request to `/api/visitorsPurposeDelete` without `id` and with valid authorization returns a
@@ -70,19 +70,12 @@ Feature: As an administrator I should be able to delete the visitor puspose reco
     # Api kullanicisi "api/visitorsPurposeDelete" path parametrelerini olusturur
     * The api user prepares a DELETE request to send to the api visitorsPurposeDelete endpoint containing the information <id>.
     # Api kullanicisi api visitorsPurposeDelete endpointine gondermek icin <id> bilgisini iceren bir delete request hazirlar
-    * The api user sends a DELETE request and saves the returned response.
-    # Api kullanicisi DELETE request gonderir ve donen responsei kaydeder
-    * The api user verifies that the status code is 403.
-    # Api kullanicisi status codeun 403 oldugunu dogrular
-    * The api user verifies that the "message" information in the response body is "You do not have authorization or token error".
-    # Api kullanicisi response bodydeki message bilgisinin "You do not have authorization or token error" oldugunu dogrular
+    * The api user sends a DELETE request, saves the returned response, and verifies that the status code is '403' with the reason phrase Forbidden.
+    # Api kullanicisi DELETE request gonderir, donen responsei kaydeder, status codeun '403' ve reason phrase bilgisinin Forbidden oldugunu dogrular
 
     Examples:
       | id   |
-      | 1267 |
-
-    # * The api user sends a DELETE request, saves the returned response, and verifies that the status code is '403' with the reason phrase Forbidden.
-    # Api kullanicisi DELETE request gonderir, donen responsei kaydeder, status codeun '403' ve reason phrase bilgisinin Forbidden oldugunu dogrular
+      | 1278 |
 
 
 
@@ -102,5 +95,5 @@ Feature: As an administrator I should be able to delete the visitor puspose reco
 
     Examples:
       | id   |
-      | 1267 |
+      | 1277 |
 

@@ -1,6 +1,6 @@
 Feature: As an administrator (admin), I want to be able to access the Visitor Purpose information of the user whose id is
   given via API connection.
-@US
+
   Scenario Outline: Verify that a POST request to `/api/visitorsPurposeId` with valid authorization and correct data returns a
   200 status code, a "Success" message, and validates the response body contents (`id`, `visitors_purpose`, `description`,
   `created_at`).

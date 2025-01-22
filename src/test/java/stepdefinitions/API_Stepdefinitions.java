@@ -9,11 +9,15 @@ import io.restassured.response.Response;
 import org.hamcrest.Matchers;
 import org.json.JSONObject;
 import org.junit.Assert;
+import pojos.VisitorsPurposeDeletePojo;
 import utilities.API_Utilities.API_Methods;
+
+import java.util.HashMap;
 
 import static hooks.HooksAPI.spec;
 import static io.restassured.RestAssured.delete;
 import static io.restassured.RestAssured.given;
+import static utilities.API_Utilities.API_Methods.fullPath;
 
 public class API_Stepdefinitions {
 
@@ -21,6 +25,8 @@ public class API_Stepdefinitions {
     JsonPath jsonPath;
     String exceptionMesaj;
     JSONObject jsonObjectRequestBody;
+    HashMap<String, Object> hashMapRequestBody;
+    VisitorsPurposeDeletePojo requestBody;
 
     @Given("The api user constructs the base url with the {string} token.")
     public void the_api_user_constructs_the_base_url_with_the_token(String userType) {
@@ -37,7 +43,7 @@ public class API_Stepdefinitions {
         response = given()
                 .spec(spec)
                 .when()
-                .get(API_Methods.fullPath);
+                .get(fullPath);
 
         response.prettyPrint();
     }
@@ -71,7 +77,7 @@ public class API_Stepdefinitions {
             response = given()
                     .spec(spec)
                     .when()
-                    .get(API_Methods.fullPath);
+                    .get(fullPath);
         } catch (Exception e) {
             exceptionMesaj = e.getMessage();
         }
@@ -87,6 +93,7 @@ public class API_Stepdefinitions {
 
         System.out.println("Post Body : " + jsonObjectRequestBody);
     }
+
     @Given("The api user sends a POST request and saves the returned response.")
     public void the_api_user_sends_a_post_request_and_saves_the_returned_response() {
         response = given()
@@ -94,10 +101,11 @@ public class API_Stepdefinitions {
                 .contentType(ContentType.JSON)
                 .when()
                 .body(jsonObjectRequestBody.toString())
-                .post(API_Methods.fullPath);
+                .post(fullPath);
 
         response.prettyPrint();
     }
+
     @Given("The api user verifies that the data in the response body includes {string}, {string}, {string} and {string}.")
     public void the_api_user_verifies_that_the_data_in_the_response_body_includes_and(String id, String visitors_purpose, String description, String created_at) {
         response.then()
@@ -108,4 +116,126 @@ public class API_Stepdefinitions {
                         "lists.created_at", Matchers.equalTo(created_at));
     }
 
+    @Given("The api user prepares a post request that does not contain data to the api visitorsPurposeid endpoint.")
+    public void the_api_user_prepares_a_post_request_that_does_not_contain_data_to_the_api_visitors_purposeid_endpoint() {
+        jsonObjectRequestBody = new JSONObject();
+    }
+
+    @Given("The api user prepares a POST request to send to the api visitorsPurposeAdd endpoint containing the information {string} and {string}.")
+    public void the_api_user_prepares_a_post_request_to_send_to_the_api_visitors_purpose_add_endpoint_containing_the_information_and(String visitors_purpose, String description) {
+        jsonObjectRequestBody = new JSONObject();
+        jsonObjectRequestBody.put("visitors_purpose",visitors_purpose);
+        jsonObjectRequestBody.put("description",description);
+
+        System.out.println("Post Body : " + jsonObjectRequestBody);
+    }
+
+    @Given("The api user prepares a post request that does not contain data to the api visitorsPurposeAdd endpoint.")
+    public void the_api_user_prepares_a_post_request_that_does_not_contain_data_to_the_api_visitors_purpose_add_endpoint() {
+        jsonObjectRequestBody = new JSONObject();
+    }
+    @Given("The api user prepares a POST request to send to the api visitorsPurposeAdd endpoint containing the information {string}.")
+    public void the_api_user_prepares_a_post_request_to_send_to_the_api_visitors_purpose_add_endpoint_containing_the_information(String description) {
+        jsonObjectRequestBody = new JSONObject();
+        jsonObjectRequestBody.put("description",description);
+
+        System.out.println("Post Body : " + jsonObjectRequestBody);
+    }
+
+    @Given("The api user prepares a PATCH request to send to the api visitorsPurposeUpdate endpoint containing the information {int}, {string} and {string}.")
+    public void the_api_user_prepares_a_patch_request_to_send_to_the_api_visitors_purpose_update_endpoint_containing_the_information_and(int id, String visitors_purpose, String description) {
+        hashMapRequestBody = new HashMap<>();
+        hashMapRequestBody.put("id", id);
+        hashMapRequestBody.put("visitors_purpose", visitors_purpose);
+        hashMapRequestBody.put("description", description);
+
+        System.out.println("Patch Body : " + hashMapRequestBody);
+    }
+    @Given("The api user sends a PATCH request and saves the returned response.")
+    public void the_api_user_sends_a_patch_request_and_saves_the_returned_response() {
+        response = given()
+                .spec(spec)
+                .contentType(ContentType.JSON)
+                .when()
+                .body(hashMapRequestBody)
+                .patch(fullPath);
+
+        response.prettyPrint();
+    }
+    @Given("The api user verifies that the updateid information in the response body is the same as the id information in the request body.")
+    public void the_api_user_verifies_that_the_updateid_information_in_the_response_body_is_the_same_as_the_id_information_in_the_request_body() {
+        Assert.assertEquals(hashMapRequestBody.get("id"), response.as(HashMap.class).get("updateId"));
+    }
+
+    @Given("The api user prepares a PATCH request to send to the api visitorsPurposeUpdate endpoint containing the information {string} and {string}.")
+    public void the_api_user_prepares_a_patch_request_to_send_to_the_api_visitors_purpose_update_endpoint_containing_the_information_and(String visitors_purpose, String description) {
+        hashMapRequestBody = new HashMap<>();
+        hashMapRequestBody.put("visitors_purpose", visitors_purpose);
+        hashMapRequestBody.put("description", description);
+
+        System.out.println("Patch Body : " + hashMapRequestBody);
+    }
+    @Given("The api user sends a PATCH request, saves the returned response, and verifies that the status code is '403' with the reason phrase Forbidden.")
+    public void the_api_user_sends_a_patch_request_saves_the_returned_response_and_verifies_that_the_status_code_is_with_the_reason_phrase_forbidden() {
+        try {
+            response = given()
+                    .spec(spec)
+                    .contentType(ContentType.JSON)
+                    .when()
+                    .body(hashMapRequestBody)
+                    .patch(fullPath);
+        } catch (Exception e) {
+            exceptionMesaj = e.getMessage();
+        }
+
+        System.out.println("exceptionMesaj : " + exceptionMesaj);
+        Assert.assertEquals(ConfigReader.getProperty("unauthorizedExceptionMessage", "api"), exceptionMesaj);
+    }
+    @Given("The api user verifies visitors_purpose as {string}")
+    public void the_api_user_verifies_visitors_purpose_as(String visitors_purpose) {
+        response.then()
+                .assertThat()
+                .body("lists.visitors_purpose", Matchers.equalTo(visitors_purpose));
+    }
+
+    @Given("The api user prepares a DELETE request to send to the api visitorsPurposeDelete endpoint containing the information {int}.")
+    public void the_api_user_prepares_a_delete_request_to_send_to_the_api_visitors_purpose_delete_endpoint_containing_the_information(int id) {
+        requestBody = new VisitorsPurposeDeletePojo(id);
+
+        System.out.println("Delete Body : " + requestBody);
+    }
+    @Given("The api user sends a DELETE request and saves the returned response.")
+    public void the_api_user_sends_a_delete_request_and_saves_the_returned_response() {
+        response = given()
+                .spec(spec)
+                .contentType(ContentType.JSON)
+                .when()
+                .body(requestBody)
+                .delete(fullPath);
+
+        response.prettyPrint();
+    }
+    @Given("The api user verifies that the Deletedid information in the response body is the same as the id information in the request body.")
+    public void the_api_user_verifies_that_the_deletedid_information_in_the_response_body_is_the_same_as_the_id_information_in_the_request_body() {
+       jsonPath = response.jsonPath();
+
+        Assert.assertEquals(requestBody.getId(), jsonPath.getInt("DeletedId"));
+    }
+
+    @Given("The api user sends a DELETE request, saves the returned response, and verifies that the status code is '403' with the reason phrase Forbidden.")
+    public void the_api_user_sends_a_delete_request_saves_the_returned_response_and_verifies_that_the_status_code_is_with_the_reason_phrase_forbidden() {
+        try {
+            response = given()
+                    .spec(spec)
+                    .contentType(ContentType.JSON)
+                    .when()
+                    .body(requestBody)
+                    .delete(fullPath);
+        } catch (Exception e) {
+            exceptionMesaj = e.getMessage();
+        }
+
+        System.out.println("exceptionMesaj : " + exceptionMesaj);
+        Assert.assertEquals(ConfigReader.getProperty("unauthorizedExceptionMessage","api"), exceptionMesaj);
+    }
 }

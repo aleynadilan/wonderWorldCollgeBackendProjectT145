@@ -22,7 +22,7 @@ Feature: As an administrator (admin), I want to be able to update the visitor pu
 
     Examples:
       | id   | visitors_purpose | description            |
-      | 1266 | purpose update   | came for student visit |
+      | 1277 | purpose update   | came for student visit |
 
 
   Scenario Outline: Verify that a PATCH request to `/api/visitorsPurposeUpdate` with valid authorization and invalid `id`
@@ -97,19 +97,13 @@ Feature: As an administrator (admin), I want to be able to update the visitor pu
     # Api kullanicisi "api/visitorsPurposeUpdate" path parametrelerini olusturur
     * The api user prepares a PATCH request to send to the api visitorsPurposeUpdate endpoint containing the information <id>, "<visitors_purpose>" and "<description>".
     # Api kullanicisi api visitorsPurposeUpdate endpointine gondermek icin <id>, "<visitors_purpose>" ve "<description>" bilgilerini iceren bir post request hazirlar
-    * The api user sends a PATCH request and saves the returned response.
-    # Api kullanicisi PATCH request gonderir ve donen responsei kaydeder
-    * The api user verifies that the status code is 403.
-    # Api kullanicisi status codeun 403 oldugunu dogrular
-    * The api user verifies that the "message" information in the response body is "You do not have authorization or token error".
-    # Api kullanicisi response bodydeki message bilgisinin "You do not have authorization or token error" oldugunu dogrular
+    * The api user sends a PATCH request, saves the returned response, and verifies that the status code is '403' with the reason phrase Forbidden.
+    # Api kullanicisi PATCH request gonderir, donen responsei kaydeder, status codeun '403' ve reason phrase bilgisinin Forbidden oldugunu dogrular
 
     Examples:
       | id   | visitors_purpose | description            |
-      | 1266 | purpose update   | came for student visit |
+      | 1277 | purpose update   | came for student visit |
 
-    # * The api user sends a PATCH request, saves the returned response, and verifies that the status code is '403' with the reason phrase Forbidden.
-    # Api kullanicisi PATCH request gonderir, donen responsei kaydeder, status codeun '403' ve reason phrase bilgisinin Forbidden oldugunu dogrular
 
 
   Scenario Outline: Verify that the visitor purpose record updated via API is successfully updated by sending a POST request to
@@ -128,4 +122,4 @@ Feature: As an administrator (admin), I want to be able to update the visitor pu
 
     Examples:
       | id   |
-      | 1266 |
+      | 1277 |
